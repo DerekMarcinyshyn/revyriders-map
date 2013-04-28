@@ -33,3 +33,62 @@ defined( 'ABSPATH' ) or die( "Cannot access pages directly." );
 
 // Plugin version
 define( 'REVYRIDERSMAP_VERSION', '1.0');
+
+// Plugin directory
+define( 'REVYRIDERSMAP_DIRECTORY', dirname( plugin_basename( __FILE__ ) ) );
+
+// Plugin URL directory
+define( 'REVYRIDERSMAP_URL', WP_PLUGIN_URL . '/' . REVYRIDERSMAP_DIRECTORY );
+
+
+/**
+ * Class Revy_Riders_Map
+ */
+class Revy_Riders_Map {
+
+	/**
+	 * @var
+	 */
+	static $add_revyriders_map;
+
+	/**
+	 * Main Plugin Function
+	 */
+	static function init() {
+		add_shortcode( 'revyriders-map', array(__CLASS__, 'revyriders_map_display' ) );
+
+		add_action( 'init', array( __CLASS__, 'register_script') );
+	}
+
+	/**
+	 * @param $atts
+	 *
+	 * @return string
+	 */
+	static function revyriders_map_display( $atts ) {
+		self::$add_revyriders_map = true;
+
+		$html = '<div id="map-canvas"></div>';
+		$html .= '<style type="text/css">';
+		$html .= '#map-canvas {height:800px;}';
+		$html .= '#map-canvas img {max-width:none;}';
+		$html .= '</style>';
+
+		return $html;
+	}
+
+	/**
+	 * Register javascript
+	 */
+	static function register_script() {
+		// load google maps api
+		wp_register_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?sensor=true');
+		wp_enqueue_script( 'googlemaps');
+
+		// load js
+		wp_register_script( 'revyriders-map', REVYRIDERSMAP_URL . '/revyriders-map.js', array('jquery'), REVYRIDERSMAP_VERSION, true );
+		wp_enqueue_script( 'revyriders-map');
+	}
+}
+
+Revy_Riders_Map::init();
