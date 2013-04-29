@@ -82,7 +82,7 @@ class Revy_Riders_Map {
 	 */
 	static function register_script() {
 		// load google maps api
-		wp_register_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?sensor=true');
+		wp_register_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?sensor=true&libraries=weather');
 		wp_enqueue_script( 'googlemaps');
 
 		// load js
