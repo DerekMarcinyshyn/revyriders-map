@@ -40,6 +40,9 @@ define( 'REVYRIDERSMAP_DIRECTORY', dirname( plugin_basename( __FILE__ ) ) );
 // Plugin URL directory
 define( 'REVYRIDERSMAP_URL', WP_PLUGIN_URL . '/' . REVYRIDERSMAP_DIRECTORY );
 
+// Updater
+include_once( WP_PLUGIN_DIR . '/' . REVYRIDERSMAP_DIRECTORY . '/lib/updater/updater.php' );
+
 
 /**
  * Class Revy_Riders_Map
@@ -47,17 +50,12 @@ define( 'REVYRIDERSMAP_URL', WP_PLUGIN_URL . '/' . REVYRIDERSMAP_DIRECTORY );
 class Revy_Riders_Map {
 
 	/**
-	 * @var
-	 */
-	static $add_revyriders_map;
-
-	/**
 	 * Main Plugin Function
 	 */
 	static function init() {
-		add_shortcode( 'revyriders-map', array(__CLASS__, 'revyriders_map_display' ) );
+		add_shortcode( 'revyriders-map', array( __CLASS__, 'revyriders_map_display' ) );
 
-		add_action( 'init', array( __CLASS__, 'register_script') );
+		add_action( 'admin_init', array( __CLASS__, 'updater' ) );
 	}
 
 	/**
@@ -66,7 +64,14 @@ class Revy_Riders_Map {
 	 * @return string
 	 */
 	static function revyriders_map_display( $atts ) {
-		self::$add_revyriders_map = true;
+
+		// load google maps api
+		wp_register_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?sensor=true&libraries=weather');
+		wp_enqueue_script( 'googlemaps');
+
+		// load js
+		wp_register_script( 'revyriders-map', REVYRIDERSMAP_URL . '/revyriders-map.js', array('jquery'), REVYRIDERSMAP_VERSION, true );
+		wp_enqueue_script( 'revyriders-map');
 
 		$html = '<div id="map-canvas"></div>';
 		$html .= '<style type="text/css">';
@@ -78,17 +83,29 @@ class Revy_Riders_Map {
 	}
 
 	/**
-	 * Register javascript
+	 * Updater class checks GitHub repo
 	 */
-	static function register_script() {
-		// load google maps api
-		wp_register_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?sensor=true&libraries=weather');
-		wp_enqueue_script( 'googlemaps');
+	static function updater() {
+		if ( is_admin() ) {
+			$config = array(
+				'slug'									=> REVYRIDERSMAP_DIRECTORY . '/revyriders-map.php',
+				'proper_folder_name'		=> 'revyriders-map',
+				'api_url'								=> 'https://api.github.com/repos/DerekMarcinyshyn/revyriders-map',
+				'raw_url'								=> 'https://raw.github.com/DerekMarcinyshyn/revyriders-map/master',
+				'github_url'						=> 'https://github.com/DerekMarcinyshyn/revyriders-map',
+				'zip_url'								=> 'https://github.com/DerekMarcinyshyn/revyriders-map/zipball/master',
+				'sslverify'							=> false,
+				'requires'							=> '3.0',
+				'tested'								=> '3.6',
+				'readme'								=> 'README.md',
+				'access_token'					=> '',
+			);
 
-		// load js
-		wp_register_script( 'revyriders-map', REVYRIDERSMAP_URL . '/revyriders-map.js', array('jquery'), REVYRIDERSMAP_VERSION, true );
-		wp_enqueue_script( 'revyriders-map');
+			new WP_RevyRiders_Map_Updater( $config );
+
+		}
 	}
+
 }
 
 Revy_Riders_Map::init();
