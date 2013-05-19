@@ -67,11 +67,11 @@ class Revy_Riders_Map {
 
 		// load google maps api
 		wp_register_script( 'googlemaps', 'https://maps.googleapis.com/maps/api/js?sensor=true&libraries=weather');
-		wp_enqueue_script( 'googlemaps');
+		wp_enqueue_script( 'googlemaps' );
 
 		// load js
 		wp_register_script( 'revyriders-map', REVYRIDERSMAP_URL . '/revyriders-map.js', array('jquery'), REVYRIDERSMAP_VERSION, true );
-		wp_enqueue_script( 'revyriders-map');
+		wp_enqueue_script( 'revyriders-map' );
 
 		$html = '<div id="map-canvas"></div>';
 		$html .= '<style type="text/css">';
@@ -102,7 +102,6 @@ class Revy_Riders_Map {
 			);
 
 			new WP_RevyRiders_Map_Updater( $config );
-
 		}
 	}
 
