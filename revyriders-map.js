@@ -21,7 +21,7 @@ function initialize() {
 	var cloudLayer = new google.maps.weather.CloudLayer();
 	cloudLayer.setMap(map);
 
-	var dirtbiker = 'http://www.localhost.com/revyriders/wp-content/plugins/revyriders-map/img/motorbike.png';
+	var dirtbiker = '/wp-content/plugins/revyriders-map/img/motorbike.png';
 
 	var track = new google.maps.Marker({
 		map: map,
@@ -43,7 +43,7 @@ function initialize() {
 					'<p>Follow the signs on Westside Road</p>' +
 					'</div>' +
 					'<div class="track-image">' +
-					'<img src="http://www.localhost.com/revyriders/wp-content/plugins/revyriders-map/img/info-window-track.jpg" alt="Revy Riders Motocross Track" />' +
+					'<img src="/wp-content/plugins/revyriders-map/img/info-window-track.jpg" alt="Revy Riders Motocross Track" />' +
 					'</div>' +
 					'</div>';
 
