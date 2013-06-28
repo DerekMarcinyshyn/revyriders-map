@@ -10,7 +10,7 @@ Plugin URI: https://derekmarcinyshyn.github.com/revy riders map
 Description: A Google Map showcasing Revy Riders Dirt Bike Club trails and track in Revelstoke, BC.
 Author: Derek Marcinyshyn
 Author URI: http://derek.marcinyshyn.com
-Version: 1.0
+Version: 1.1
 License: GPLv2
 
 This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 defined( 'ABSPATH' ) or die( "Cannot access pages directly." );
 
 // Plugin version
-define( 'REVYRIDERSMAP_VERSION', '1.0');
+define( 'REVYRIDERSMAP_VERSION', '1.1');
 
 // Plugin directory
 define( 'REVYRIDERSMAP_DIRECTORY', dirname( plugin_basename( __FILE__ ) ) );
